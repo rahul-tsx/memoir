@@ -2,20 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+	:root {
+		/* Background Colors */
+		--bg-primary: #f1f8fb;
+		--bg-secondary: #e3eef2;
+		--bg-dark: #082738;
+
+		/* Text Colors */
+		--text-primary: #0f172a;
+		--text-secondary: #528c91;
+		--text-muted: #64748b;
+		--text-hover: #0077b6;
+		--text-light: #eef2f6;
+
+		/* Button Colors */
+		--btn-primary-bg: #0077b6;
+		--btn-primary-hover-bg: #005f8e;
+		--btn-secondary-bg: #33a1fd;
+		--btn-secondary-hover-bg: #1a91db;
+
+		/* Card Colors */
+		--card-bg: #ffffff;
+		--card-shadow: #cbd5e1;
+		--card-border: #dbeafe;
+
+		/* Border Colors */
+		--border-color: #528c91;
+
+		/* Additional Colors for Our App */
+		--accent-1: #ffafcc;
+		--accent-2: #ffbf69;
+		--accent-3: #2ec4b6;
+		--success: #38b000;
+		--warning: #f59e0b;
+		--error: #d00000;
+	}
+
+	.dark {
+		/* Background Colors */
+		--bg-primary: #082738;
+		--bg-secondary: #112f41;
+		--bg-dark: #051923;
+
+		/* Text Colors */
+		--text-primary: #f0f4f8;
+		--text-secondary: #88c4c4;
+		--text-muted: #718096;
+		--text-hover: #00a3e1;
+		--text-light: #e3eef2;
+
+		/* Button Colors */
+		--btn-primary-bg: #00a3e1;
+		--btn-primary-hover-bg: #0077b6;
+		--btn-secondary-bg: #33c9f8;
+		--btn-secondary-hover-bg: #1bb1d9;
+
+		/* Card Colors */
+		--card-bg: #1e293b;
+		--card-shadow: #0a1822;
+		--card-border: #334155;
+
+		/* Border Colors */
+		--border-color: #88c4c4;
+
+		/* Additional Colors for Our App */
+		--accent-1: #e63946;
+		--accent-2: #ffbf69;
+		--accent-3: #2ec4b6;
+		--success: #68d391;
+		--warning: #f6ad55;
+		--error: #ff4d4f;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-app_bg_primary text-app_text_primary;
+	}
+}
+.primaryButton {
+	@apply px-5 py-2 w-fit mx-auto bg-app_btn_primary_bg hover:bg-app_btn_primary_hover_bg cursor-pointer rounded-lg;
+}
+.secondaryButton {
+	@apply px-5 py-2 w-fit mx-auto bg-app_btn_secondary_bg hover:bg-app_btn_secondary_hover_bg cursor-pointer rounded-lg;
+}
+.myContainer {
+	@apply max-w-[1400px] px-10 mx-auto py-10;
+}
+.subheading {
+	@apply text-2xl font-bold mb-6;
+}
+.no-scrollbar {
+	/* For Webkit-based browsers (Chrome, Safari, Edge) */
+	-ms-overflow-style: none; /* IE 10+ */
+	scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none; /* Hide scrollbar */
 }
