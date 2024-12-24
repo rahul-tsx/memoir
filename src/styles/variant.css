@@ -1,0 +1,73 @@
+@layer base {
+	:root {
+		/* Background Colors */
+		--bg-primary: #f1f8fb;
+		--bg-secondary: #e3eef2;
+		--bg-dark: #082738;
+
+		/* Text Colors */
+		--text-primary: #0f172a;
+		--text-secondary: #528c91;
+		--text-muted: #64748b;
+		--text-hover: #0077b6;
+		--text-light: #eef2f6;
+
+		/* Button Colors */
+		--btn-primary-bg: #0077b6;
+		--btn-primary-hover-bg: #005f8e;
+		--btn-secondary-bg: #33a1fd;
+		--btn-secondary-hover-bg: #1a91db;
+
+		/* Card Colors */
+		--card-bg: #ffffff;
+		--card-shadow: #cbd5e1;
+		--card-border: #dbeafe;
+
+		/* Border Colors */
+		--border-color: #528c91;
+
+		/* Additional Colors for Our App */
+		--accent-1: #ffafcc;
+		--accent-2: #ffbf69;
+		--accent-3: #2ec4b6;
+		--success: #38b000;
+		--warning: #f59e0b;
+		--error: #d00000;
+	}
+
+	.dark {
+		/* Background Colors */
+		--bg-primary: #082738;
+		--bg-secondary: #112f41;
+		--bg-dark: #051923;
+
+		/* Text Colors */
+		--text-primary: #f0f4f8;
+		--text-secondary: #88c4c4;
+		--text-muted: #718096;
+		--text-hover: #00a3e1;
+		--text-light: #e3eef2;
+
+		/* Button Colors */
+		--btn-primary-bg: #00a3e1;
+		--btn-primary-hover-bg: #0077b6;
+		--btn-secondary-bg: #33c9f8;
+		--btn-secondary-hover-bg: #1bb1d9;
+
+		/* Card Colors */
+		--card-bg: #1e293b;
+		--card-shadow: #0a1822;
+		--card-border: #334155;
+
+		/* Border Colors */
+		--border-color: #88c4c4;
+
+		/* Additional Colors for Our App */
+		--accent-1: #e63946;
+		--accent-2: #ffbf69;
+		--accent-3: #2ec4b6;
+		--success: #68d391;
+		--warning: #f6ad55;
+		--error: #ff4d4f;
+	}
+}
