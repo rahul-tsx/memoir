@@ -1,4 +1,4 @@
-'use cleint';
+'use client';
 import { FC, useRef } from 'react';
 import CanvasComponent from './Canvas';
 import { FaTrash } from 'react-icons/fa';

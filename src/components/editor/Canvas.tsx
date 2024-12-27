@@ -28,7 +28,7 @@ const CanvasComponent: FC<CanvasComponentProps> = ({ deleteComponent }) => {
 		fontStyle,
 		isBold,
 		isItalic,
-		shapeColor,
+		color,
 		text,
 		setCanvas,
 		textColor,
@@ -36,6 +36,7 @@ const CanvasComponent: FC<CanvasComponentProps> = ({ deleteComponent }) => {
 		setTextObjects,
 	} = useCanvasStore();
 	useEffect(() => {
+		console.log('My canvas', canvas);
 		if (canvasRef.current && !canvas) {
 			const fabricCanvas = new Canvas(canvasRef.current, {
 				backgroundColor: backgroundColor,
@@ -62,67 +63,25 @@ const CanvasComponent: FC<CanvasComponentProps> = ({ deleteComponent }) => {
 		}
 	}, [canvas, canvasWidth, canvasHeight]);
 
-	// Update Rectangle Color
-	useEffect(() => {
-		if (canvas) {
-			canvas.getObjects('rect').forEach((obj) => {
-				obj.set('fill', shapeColor);
-			});
-			canvas.renderAll();
-		}
-	}, [canvas, shapeColor]);
 
-	// Update/Add Text
-	// useEffect(() => {
-	// 	if (canvas) {
-	// 		// Remove existing text objects
-	// 		// canvas.getObjects('text').forEach((obj) => {
-	// 		// 	const objProps = obj.toObject();
-	// 		// 	console.log('my object', objProps.text);
-	// 		// 	if (textObjects && !textObjects[objProps.text]) canvas.remove(obj);
-	// 		// });
-	// 		canvas.getObjects('text').forEach((obj) => {
-	// 			if (textObjects && !textObjects[obj.get('id')]) canvas.remove(obj);
-	// 		});
-	// 		// canvas.getObjects('text').forEach((obj) => canvas.remove(obj));
 
-	// 		// Add new text
-	// 		if (textObjects) {
-	// 			Object.values(textObjects).forEach((textObj) => {
-	// 				canvas.add(textObj);
-	// 				canvas.renderAll();
-	// 			});
-	// 		}
-	// 		// if (text) {
-	// 		// 	const fabricText = new FabricText(text, {
-	// 		// 		left: 100,
-	// 		// 		top: 100,
-	// 		// 		fontSize,
-	// 		// 		fill: textColor,
-	// 		// 		fontWeight: isBold ? 'bold' : 'normal',
-	// 		// 		fontStyle: isItalic ? 'italic' : 'normal',
-	// 		// 	});
-	// 		// 	canvas.add(fabricText);
-	// 		// 	canvas.renderAll();
-	// 		// }
-	// 	}
-	// }, [canvas, text, fontSize, textColor, isBold, isItalic, fontStyle]);
+	
 	const deleteSelectedItem = () => {
 		if (canvas) {
 			const activeObject = canvas.getActiveObject();
 			if (activeObject) {
 				console.log('My Active object', activeObject);
-				if (textObjects && textObjects[activeObject.get('id')]) {
-					setTextObjects((prev) => {
-						const newObj = Object.fromEntries(
-							Object.entries(prev).filter(
-								([key]) => key !== activeObject.get('id')
-							)
-						);
-						console.log('New obj', newObj);
-						return newObj;
-					});
-				}
+				// if (textObjects && textObjects[activeObject.get('id')]) {
+				// 	setTextObjects((prev) => {
+				// 		const newObj = Object.fromEntries(
+				// 			Object.entries(prev).filter(
+				// 				([key]) => key !== activeObject.get('id')
+				// 			)
+				// 		);
+				// 		console.log('New obj', newObj);
+				// 		return newObj;
+				// 	});
+				// }
 
 				canvas.remove(activeObject);
 				canvas.renderAll();
