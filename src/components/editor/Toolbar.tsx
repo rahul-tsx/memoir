@@ -23,12 +23,16 @@ import {
 } from 'fabric';
 import ShapeBar from './ShapeBar';
 import Textbar from './Textbar';
+import CropperMenu from './CropperMenu';
+import Cropper from './Cropper';
+import CanvasSettings from './CanvasSettings';
 
 interface ToolbarProps {
 	containerRef: RefObject<HTMLDivElement | null>;
 }
 
 const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
+	const [refreshKey, setRefreshKey] = useState(0);
 	const {
 		text,
 		setText,
@@ -45,7 +49,7 @@ const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
 		setTextColor,
 		isBold,
 		isItalic,
-		setTextObjects,
+
 		color,
 		width,
 		height,
@@ -63,6 +67,7 @@ const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
 		setDiameter,
 		setBackgroundColor,
 	} = useCanvasStore();
+
 	useEffect(() => {
 		const handleResize = () => {
 			if (containerRef.current) {
@@ -110,7 +115,10 @@ const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
 		setDiameter(0);
 		setColor('#000000');
 	};
-
+	const handleFramesUpdate = () => {
+		console.log('frameUpdated');
+		setRefreshKey((prev) => prev + 1);
+	};
 	const handleObjectSelection = (object: FabricObject) => {
 		if (!object) return;
 		setSelectedObject(object);
@@ -138,7 +146,6 @@ const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
 			setFontWeight((object as IText).fontWeight);
 		}
 	};
-
 
 	// Add Image to Canvas
 	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,17 +190,15 @@ const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
 			{/* Text Input */}
 			<Textbar />
 
-			<div className='mb-6 flex space-x-5 items-center'>
-				<Label>Background Color</Label>
-				<input
-					type='color'
-					value={backgroundColor}
-					onChange={(color) => setBackgroundColor(color.target.value)}
-				/>
-			</div>
+			<CanvasSettings />
 			{/* Add Shape Options */}
-			<ShapeBar />
-			{/* Image Upload */}
+			<div className='flex gap-3 items-center'>
+				<ShapeBar />
+			</div>
+			<Cropper onFramesUpdated={handleFramesUpdate} />
+			<CropperMenu refreshKey={refreshKey} />
+			{/* Download Button */}
+
 			<div className='mb-6'>
 				<Label>Add Image</Label>
 				<Input
@@ -202,10 +207,9 @@ const Toolbar: FC<ToolbarProps> = ({ containerRef }) => {
 					onChange={handleImageUpload}
 				/>
 			</div>
-			{/* Download Button */}
 			<button
 				onClick={downloadCard}
-				className='primaryButton w-full'>
+				className='primaryButton w-full flex my-5'>
 				Download Card
 			</button>
 		</div>

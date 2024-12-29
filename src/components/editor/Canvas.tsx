@@ -10,8 +10,10 @@ import {
 	TextProps,
 	SerializedTextProps,
 	ObjectEvents,
+	Line,
 } from 'fabric';
 import { useCanvasStore } from '@/store/canvasStore';
+import { clearGuidelines, handleObjectMoving } from '@/lib/util/snappingHelper';
 
 interface CanvasComponentProps {
 	deleteComponent: React.RefObject<HTMLButtonElement | null>;
@@ -19,6 +21,7 @@ interface CanvasComponentProps {
 
 const CanvasComponent: FC<CanvasComponentProps> = ({ deleteComponent }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [guidelines, setGuidelines] = useState<Line[]>([]);
 	const {
 		backgroundColor,
 		canvas,
@@ -32,40 +35,47 @@ const CanvasComponent: FC<CanvasComponentProps> = ({ deleteComponent }) => {
 		text,
 		setCanvas,
 		textColor,
-		textObjects,
-		setTextObjects,
 	} = useCanvasStore();
+
 	useEffect(() => {
-		console.log('My canvas', canvas);
-		if (canvasRef.current && !canvas) {
+		if (canvasRef.current) {
 			const fabricCanvas = new Canvas(canvasRef.current, {
 				backgroundColor: backgroundColor,
 			});
+			fabricCanvas.renderAll();
 			setCanvas(fabricCanvas);
+
+			fabricCanvas.on('object:moving', (event) =>
+				handleObjectMoving({
+					canvas: fabricCanvas,
+					obj: event.target,
+					setGuidelines,
+				})
+			);
+			fabricCanvas.on('object:modified', (event) =>
+				clearGuidelines(fabricCanvas)
+			);
+
+			return () => {
+				fabricCanvas.dispose();
+				if (canvas) {
+					canvas.dispose();
+					setCanvas(null);
+				}
+			};
 		}
+	}, []);
 
-		return () => {
-			if (canvas) {
-				canvas.dispose();
-				-setCanvas(null);
-			}
-		};
-	}, [canvasRef, canvas, setCanvas, backgroundColor]);
+	// useEffect(() => {
+	// 	if (canvas) {
+	// 		canvas.setDimensions({
+	// 			width: canvasWidth * 0.8,
+	// 			height: canvasHeight * 0.8,
+	// 		});
 
-	useEffect(() => {
-		if (canvas) {
-			canvas.setDimensions({
-				width: canvasWidth * 0.8,
-				height: canvasHeight * 0.8,
-			});
+	// 	}
+	// }, [canvas, canvasWidth, canvasHeight]);
 
-			// canvas.setBackgroundColor(backgroundColor, canvas.renderAll.bind(canvas));
-		}
-	}, [canvas, canvasWidth, canvasHeight]);
-
-
-
-	
 	const deleteSelectedItem = () => {
 		if (canvas) {
 			const activeObject = canvas.getActiveObject();

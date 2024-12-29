@@ -2,6 +2,13 @@ import { useCanvasStore } from '@/store/canvasStore';
 import { Label } from '@radix-ui/react-label';
 import { Circle, Rect, Triangle } from 'fabric';
 import { FC } from 'react';
+import { frameObject } from './CropperMenu';
+import {
+	CgShapeCircle,
+	CgShapeSquare,
+	CgShapeTriangle,
+	CgSquare,
+} from 'react-icons/cg';
 
 interface ShapeBarProps {}
 
@@ -17,6 +24,7 @@ const ShapeBar: FC<ShapeBarProps> = ({}) => {
 		setDiameter,
 		setColor,
 		selectedObject,
+		frames,
 	} = useCanvasStore();
 	const addShape = (shape: string) => {
 		if (canvas) {
@@ -102,69 +110,71 @@ const ShapeBar: FC<ShapeBarProps> = ({}) => {
 	return (
 		<>
 			<div className='mb-6'>
-				<Label>Add Shapes</Label>
-				<div className='flex gap-2'>
+				<Label>Shape Bar</Label>
+				{selectedObject &&
+					selectedObject.type !== 'i-text' &&
+					!frames!.includes(selectedObject as frameObject) && (
+						<div>
+							<div className='mb-6 flex space-x-5 items-center'>
+								<Label>Color</Label>
+								<input
+									type='color'
+									value={color as string}
+									onChange={handleColorChange}
+								/>
+							</div>
+							{((!frames!.includes(selectedObject as frameObject) &&
+								selectedObject.type === 'rect') ||
+								selectedObject.type === 'triangle') && (
+								<>
+									<div className='mb-6 flex space-x-5 items-center'>
+										<Label>Shape Width</Label>
+										<input
+											type='text'
+											value={width}
+											onChange={handleWidthChange}
+										/>
+									</div>
+									<div className='mb-6 flex space-x-5 items-center'>
+										<Label>Shape Height</Label>
+										<input
+											type='text'
+											value={height}
+											onChange={handleHeightChange}
+										/>
+									</div>
+								</>
+							)}
+							{selectedObject.type === 'circle' && (
+								<div className='mb-6 flex space-x-5 items-center'>
+									<Label>Shape Diameter</Label>
+									<input
+										type='text'
+										value={diameter}
+										onChange={handleDiameterChange}
+									/>
+								</div>
+							)}
+						</div>
+					)}
+				<div className='flex gap-2 my-5'>
 					<button
 						onClick={() => addShape('rectangle')}
-						className='primaryButton'>
-						Rectangle
+						className='hover:bg-app_card_primary_bg bg-app_card_primaryshadow p-2 rounded-lg shadow-xl'>
+						<CgShapeSquare size={25} />
 					</button>
 					<button
 						onClick={() => addShape('circle')}
-						className='primaryButton'>
-						Circle
+						className='hover:bg-app_card_primary_bg bg-app_card_primaryshadow p-2 rounded-lg shadow-xl'>
+						<CgShapeCircle size={25} />
 					</button>
 					<button
 						onClick={() => addShape('triangle')}
-						className='primaryButton'>
-						Triangle
+						className='hover:bg-app_card_primary_bg bg-app_card_primaryshadow p-2 rounded-lg shadow-xl'>
+						<CgShapeTriangle size={25} />
 					</button>
 				</div>
 			</div>
-
-			{selectedObject && selectedObject.type !== 'i-text' && (
-				<div>
-					<div className='mb-6 flex space-x-5 items-center'>
-						<Label>Color</Label>
-						<input
-							type='color'
-							value={color as string}
-							onChange={handleColorChange}
-						/>
-					</div>
-					{(selectedObject.type === 'rect' ||
-						selectedObject.type === 'triangle') && (
-						<>
-							<div className='mb-6 flex space-x-5 items-center'>
-								<Label>Shape Width</Label>
-								<input
-									type='text'
-									value={width}
-									onChange={handleWidthChange}
-								/>
-							</div>
-							<div className='mb-6 flex space-x-5 items-center'>
-								<Label>Shape Height</Label>
-								<input
-									type='text'
-									value={height}
-									onChange={handleHeightChange}
-								/>
-							</div>
-						</>
-					)}
-					{selectedObject.type === 'circle' && (
-						<div className='mb-6 flex space-x-5 items-center'>
-							<Label>Shape Diameter</Label>
-							<input
-								type='text'
-								value={diameter}
-								onChange={handleDiameterChange}
-							/>
-						</div>
-					)}
-				</div>
-			)}
 		</>
 	);
 };

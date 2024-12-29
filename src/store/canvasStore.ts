@@ -1,3 +1,4 @@
+import { frameObject } from '@/components/editor/CropperMenu';
 import { Canvas, FabricObject, FabricText, IText, TFiller } from 'fabric';
 import { create } from 'zustand';
 
@@ -18,8 +19,10 @@ interface CanvasState {
 	textColor: ReturnType<TFiller['toObject']> | string | null;
 	backgroundColor: string;
 	color: ReturnType<TFiller['toObject']> | string | null;
-
-	textObjects: { [key: string]: FabricText | IText };
+	frames: frameObject[] | null;
+	setFrames: (frames: frameObject[] | null) => void;
+	selectedFrame: frameObject | null;
+	setSelectedFrame: (frame: frameObject | null) => void;
 	selectedObject: FabricObject | null;
 	setFontFamily: (fontFamily: string) => void;
 	setWidth: (width: number) => void;
@@ -40,17 +43,14 @@ interface CanvasState {
 	) => void;
 	setBackgroundColor: (color: string) => void;
 	setCanvas: (canvas: Canvas | null) => void;
-	setTextObjects: (
-		updateFn: (objects: { [key: string]: FabricText | IText }) => {
-			[key: string]: FabricText | IText;
-		}
-	) => void;
 }
 
 export const useCanvasStore = create<CanvasState>((set) => ({
 	canvasWidth: 0,
 	canvasHeight: 0,
 	color: '#000000',
+	frames: null,
+	selectedFrame: null,
 	textColor: '#000000',
 	fontWeight: 'normal',
 	fontFamily: 'Arial',
@@ -65,7 +65,8 @@ export const useCanvasStore = create<CanvasState>((set) => ({
 	isItalic: false,
 	backgroundColor: '#1e293b',
 	canvas: null,
-	textObjects: {},
+	setSelectedFrame: (frame) => set({ selectedFrame: frame }),
+	setFrames: (frames) => set({ frames }),
 	setFontFamily: (fontFamily) => set({ fontFamily }),
 	setFontWeight: (weight) => set({ fontWeight: weight }),
 	setCanvasWidth: (width) => set({ canvasWidth: width }),
@@ -79,8 +80,7 @@ export const useCanvasStore = create<CanvasState>((set) => ({
 	setColor: (color) => set({ color: color }),
 	setBackgroundColor: (color) => set({ backgroundColor: color }),
 	setCanvas: (canvas) => set({ canvas }),
-	setTextObjects: (updateFn) =>
-		set((state) => ({ textObjects: updateFn(state.textObjects) })),
+
 	setDiameter: (diameter) => set({ diameter: diameter }),
 	setHeight: (height) => set({ height: height }),
 	setWidth: (width) => set({ width: width }),
